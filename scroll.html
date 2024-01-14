@@ -1,140 +1,321 @@
 <!DOCTYPE html>
 <html>
-<style>
-#myDIV {
-  height: 600px;
-  width: 100%;
-  overflow: auto;
-  display: flex;
-}
-.scrollable-place {
-			height: 1000px;
-		}
-		
-		.stop-scrolling {
-			
-			overflow: hidden;
-		}
+  <style>
+    #myDIV {
+      height: 600px;
+      width: 100%;
+      overflow: auto;
+      display: flex;
+    }
+    .scrollable-place {
+      height: 1000px;
+    }
 
-</style>
+    .stop-scrolling {
+      overflow: hidden;
+    }
+    body {
+      overflow: hidden; /* Hide scrollbars */
+    }
+  </style>
 
-<body onscroll="myFunction(event)">
-<h1 class="scrollable-place">The Element Object</h1>
-<h2>The scrollTop and scrollLeft Properties</h2>
+  <body onwheel="myWheelAction(event)" onkeydown="myKeyPressedAction(event)">
+    <h1 class="scrollable-place">The Element Object</h1>
+    <h2>The scrollTop and scrollLeft Properties</h2>
 
-<p>Scroll the content below to display the number of pixels it is scrolled.</p>
+    <p>
+      Scroll the content below to display the number of pixels it is scrolled.
+    </p>
 
-<div id="myDIV"  >
-  <img class="image" src="new.png" alt="">
-  <img class="image" src="new.png" alt="">
-  <img class="image" src="new.png" alt="">
-  <img class="image" src="new.png" alt="">
-  <img class="image" src="new.png" alt="">
-</div>
+    <div id="myDIV">
+      <img class="image" src="chatting.jpg" alt="" />
+      <img class="image" src="chatting.jpg" alt="" />
+      <img class="image" src="chatting.jpg" alt="" />
+      <img class="image" src="chatting.jpg" alt="" />
+      <img class="image" src="chatting.jpg" alt="" />
+    </div>
 
-<p id="demo"></p>
-<p>sdfgfsdzfdvcsdr</p>
-<h1>sdzsfvsdfgvsdgv</h1>
-<h1 class="scrollable-place">sdfvsdfvgsdvs</h1>
-<script>
-    
-    var scrollStop = 0;
-    let scrollValue = 0;
-    var checkAfterFinishingScrolling = 0;
-function myFunction(event) {
-    let images = document.getElementsByClassName("image");
-  const element = document.getElementById("myDIV");
-  const rect = element.getBoundingClientRect();
-  
-   
-   
-let content_width = 0;
-for (i = 0; i < images.length; i++) {
-    content_width = images[i].clientWidth + content_width;  
-  }
-  
-const isInViewport = rect.top >= 0 &&
-        rect.left >= 0 &&
-        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-        rect.right <= (window.innerWidth || document.documentElement.clientWidth);
+    <p id="demo"></p>
+    <p>sdfgfsdzfdvcsdr</p>
+    <h1>sdzsfvsdfgvsdgv</h1>
+    <h1 class="scrollable-place">sdfvsdfvgsdvs</h1>
+    <script>
+      var scrollStop = 0;
+      let scrollValue = 0;
+      var checkAfterFinishingScrolling = 0;
 
-  if(isInViewport){
-    
-        if (scrollStop < document.documentElement.scrollTop && checkAfterFinishingScrolling < document.documentElement.scrollTop){
-            if((element.scrollLeft + 10) > (content_width - element.clientWidth)){
-                if((element.scrollLeft) == (content_width - element.clientWidth)){
-                    scrollStop = 0;
-                    
-                    console.log("start scrolling");
-                }else{
-                    scrollStop = 0;
-                    if(scrollStop == 0){
-                        scrollStop = document.documentElement.scrollTop;
-                    }
-                    document.documentElement.scrollTop = scrollStop;
-                    element.scrollLeft =  content_width - element.clientWidth;
-                    console.log(content_width - element.clientWidth);
-                    
-                }
-            }else{
-                
-                
-                if(scrollStop == 0){
+      function myKeyPressedAction(event) {
+        if (event.keyCode == 40 || event.keyCode == 38) {
+          let images = document.getElementsByClassName("image");
+          const element = document.getElementById("myDIV");
+          const rect = element.getBoundingClientRect();
+          let content_width = 0;
+          for (i = 0; i < images.length; i++) {
+            content_width = images[i].clientWidth + content_width;
+          }
+
+          const isInViewport =
+            (rect.top >= 0 &&
+              rect.top <=
+                (window.innerHeight ||
+                  document.documentElement.clientHeight)) ||
+            (rect.top <= 0 &&
+              rect.top >=
+                (-window.innerHeight ||
+                  -document.documentElement.clientHeight));
+
+          if (isInViewport) {
+            if (event.keyCode == 40) {
+              // console.log(content_width, "hi", element.scrollLeft);
+              if (
+                element.scrollLeft + 10 >
+                content_width - element.clientWidth
+              ) {
+                if (
+                  Math.ceil(element.scrollLeft) ==
+                  content_width - element.clientWidth
+                ) {
+                  window.scrollBy(0, 20);
+                  scrollStop = 0;
+                } else {
+                  element.scrollIntoView();
+
+                  event.preventDefault();
+                  scrollStop = 0;
+                  if (scrollStop == 0) {
                     scrollStop = document.documentElement.scrollTop;
+                  }
+                  document.documentElement.scrollTop = scrollStop;
+                  element.scrollLeft = content_width - element.clientWidth;
+                }
+              } else {
+                element.scrollIntoView();
+
+                event.preventDefault();
+                scrollStop = 0;
+                if (scrollStop == 0) {
+                  scrollStop = document.documentElement.scrollTop;
                 }
                 document.documentElement.scrollTop = scrollStop;
-                 console.log(element.scrollLeft);
-                 element.scrollLeft = element.scrollLeft + 10;
-                
-            }
-        } else {
-            if((element.scrollLeft - 10) < 0){
-                    if(element.scrollLeft == 0){
-                        scrollStop = 0;
-                        
-                        console.log(scrollStop);
-                    }else{
-                        element.scrollLeft = 0;
-                        scrollStop = 0;
-                        if(scrollStop == 0){
-                        
-                        scrollStop = document.documentElement.scrollTop;
-                    }
-                    document.documentElement.scrollTop = scrollStop;
-                        console.log("start scrolling");
-                        
-                    }
-                    checkAfterFinishingScrolling = document.documentElement.scrollTop;
-                }else{
-                   
-                    
-                    
-                    if(scrollStop == 0){
-                        
-                        scrollStop = document.documentElement.scrollTop;
-                    }
-                    checkAfterFinishingScrolling = 0;
-                    console.log(content_width - element.clientWidth);
-                    document.documentElement.scrollTop = scrollStop;
-                    element.scrollLeft = element.scrollLeft - 10;
-                    
+                element.scrollLeft = element.scrollLeft + 10;
+              }
+            } else {
+              if (element.scrollLeft - 10 < 0) {
+                if (element.scrollLeft == 0) {
+                  window.scrollBy(0, -20);
+                  scrollStop = 0;
+                } else {
+                  element.scrollIntoView();
+                  event.preventDefault();
+                  element.scrollLeft = 0;
+                  scrollStop = 0;
+                  if (scrollStop == 0) {
+                    scrollStop = document.documentElement.scrollTop;
+                  }
+                  document.documentElement.scrollTop = scrollStop;
                 }
+                checkAfterFinishingScrolling =
+                  document.documentElement.scrollTop;
+              } else {
+                console.log(event.keyCode);
+
+                console.log(event.wheelDeltaY);
+                element.scrollIntoView();
+                event.preventDefault();
+                scrollStop = 0;
+                if (scrollStop == 0) {
+                  scrollStop = document.documentElement.scrollTop;
+                }
+                checkAfterFinishingScrolling = 0;
+                document.documentElement.scrollTop = scrollStop;
+                element.scrollLeft = element.scrollLeft - 10;
+
+                scrollStop = 0;
+              }
+            }
+          } else {
+            if (event.keyCode == 40) {
+              window.scrollBy(0, 20);
+            } else {
+              window.scrollBy(0, -20);
+            }
+          }
+
+          // console.log(scrollValue);
+
+          let x = element.scrollLeft;
+          document.getElementById("demo").innerHTML =
+            "Horizontally: " + x.toFixed();
         }
-        
-        
-    
-        
-  }
-  
-  
-  
+      }
+      function myWheelAction(event) {
+        // console.log(event);
+        console.log(window.scrollBy());
+        let images = document.getElementsByClassName("image");
+        const element = document.getElementById("myDIV");
+        const rect = element.getBoundingClientRect();
+        let content_width = 0;
+        for (i = 0; i < images.length; i++) {
+          content_width = images[i].clientWidth + content_width;
+        }
 
-// console.log(scrollValue);
-            
-  let x = element.scrollLeft;
-  document.getElementById ("demo").innerHTML = "Horizontally: " + x.toFixed() ;
-}
-</script>
+        const isInViewport =
+          (rect.top >= 0 &&
+            rect.top <=
+              (window.innerHeight || document.documentElement.clientHeight)) ||
+          (rect.top <= 0 &&
+            rect.top >=
+              (-window.innerHeight || -document.documentElement.clientHeight));
+        if (isInViewport) {
+          if (event.wheelDeltaY < 0) {
+            // console.log(content_width, "hi", element.scrollLeft);
+            if (element.scrollLeft + 10 > content_width - element.clientWidth) {
+              if (
+                Math.ceil(element.scrollLeft) ==
+                content_width - element.clientWidth
+              ) {
+                window.scrollBy(0, 20);
+                scrollStop = 0;
+              } else {
+                element.scrollIntoView();
 
-</body>
+                event.preventDefault();
+                scrollStop = 0;
+                if (scrollStop == 0) {
+                  scrollStop = document.documentElement.scrollTop;
+                }
+                document.documentElement.scrollTop = scrollStop;
+                element.scrollLeft = content_width - element.clientWidth;
+              }
+            } else {
+              element.scrollIntoView();
+
+              event.preventDefault();
+              scrollStop = 0;
+              if (scrollStop == 0) {
+                scrollStop = document.documentElement.scrollTop;
+              }
+              document.documentElement.scrollTop = scrollStop;
+              element.scrollLeft = element.scrollLeft + 10;
+            }
+          } else {
+            if (element.scrollLeft - 10 < 0) {
+              if (element.scrollLeft == 0) {
+                window.scrollBy(0, -20);
+                scrollStop = 0;
+              } else {
+                element.scrollIntoView();
+                event.preventDefault();
+                element.scrollLeft = 0;
+                scrollStop = 0;
+                if (scrollStop == 0) {
+                  scrollStop = document.documentElement.scrollTop;
+                }
+                document.documentElement.scrollTop = scrollStop;
+              }
+              checkAfterFinishingScrolling = document.documentElement.scrollTop;
+            } else {
+              if (event.wheelDeltaY > 0) {
+                console.log(event.wheelDeltaY);
+                element.scrollIntoView();
+                event.preventDefault();
+                scrollStop = 0;
+                if (scrollStop == 0) {
+                  scrollStop = document.documentElement.scrollTop;
+                }
+                checkAfterFinishingScrolling = 0;
+                document.documentElement.scrollTop = scrollStop;
+                element.scrollLeft = element.scrollLeft - 10;
+              } else {
+                scrollStop = 0;
+              }
+            }
+          }
+        } else {
+          if (event.wheelDeltaY < 0) {
+            window.scrollBy(0, 20);
+          } else {
+            window.scrollBy(0, -20);
+          }
+        }
+
+        // console.log(scrollValue);
+
+        let x = element.scrollLeft;
+        document.getElementById("demo").innerHTML =
+          "Horizontally: " + x.toFixed();
+      }
+      function myFunction(event) {
+        // console.log(event);
+        let images = document.getElementsByClassName("image");
+        const element = document.getElementById("myDIV");
+        const rect = element.getBoundingClientRect();
+
+        const isInViewport =
+          rect.top >= 0 &&
+          rect.left >= 0 &&
+          rect.bottom <=
+            (window.innerHeight || document.documentElement.clientHeight) &&
+          rect.right <=
+            (window.innerWidth || document.documentElement.clientWidth);
+
+        if (isInViewport) {
+          event.preventDefault();
+
+          if (
+            scrollStop < document.documentElement.scrollTop &&
+            checkAfterFinishingScrolling < document.documentElement.scrollTop
+          ) {
+            event.preventDefault();
+
+            if (element.scrollLeft + 10 > content_width - element.clientWidth) {
+              if (element.scrollLeft == content_width - element.clientWidth) {
+                scrollStop = 0;
+              } else {
+                scrollStop = 0;
+                if (scrollStop == 0) {
+                  scrollStop = document.documentElement.scrollTop;
+                }
+                document.documentElement.scrollTop = scrollStop;
+                element.scrollLeft = content_width - element.clientWidth;
+              }
+            } else {
+              if (scrollStop == 0) {
+                scrollStop = document.documentElement.scrollTop;
+              }
+              document.documentElement.scrollTop = scrollStop;
+              element.scrollLeft = element.scrollLeft + 10;
+            }
+          } else {
+            if (element.scrollLeft - 10 < 0) {
+              if (element.scrollLeft == 0) {
+                scrollStop = 0;
+              } else {
+                element.scrollLeft = 0;
+                scrollStop = 0;
+                if (scrollStop == 0) {
+                  scrollStop = document.documentElement.scrollTop;
+                }
+                document.documentElement.scrollTop = scrollStop;
+              }
+              checkAfterFinishingScrolling = document.documentElement.scrollTop;
+            } else {
+              if (scrollStop == 0) {
+                scrollStop = document.documentElement.scrollTop;
+              }
+              checkAfterFinishingScrolling = 0;
+              document.documentElement.scrollTop = scrollStop;
+              element.scrollLeft = element.scrollLeft - 10;
+            }
+          }
+        }
+
+        // console.log(scrollValue);
+
+        let x = element.scrollLeft;
+        document.getElementById("demo").innerHTML =
+          "Horizontally: " + x.toFixed();
+      }
+    </script>
+  </body>
 </html>
