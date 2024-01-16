@@ -8,9 +8,21 @@
       display: flex;
     }
     .scrollable-place {
+      background-color: aqua;
       height: 1000px;
     }
-
+    h1 {
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .flex-div {
+      display: flex;
+      justify-content: center;
+    }
+    h2 {
+      margin-left: auto;
+      margin-right: auto;
+    }
     .stop-scrolling {
       overflow: hidden;
     }
@@ -24,12 +36,12 @@
     onkeydown="myKeyPressedAction(event)"
     ontouchmove="myTouchAction(event)"
   >
-    <h1 class="scrollable-place">The Element Object</h1>
-    <h2>The scrollTop and scrollLeft Properties</h2>
-
-    <p>
-      Scroll the content below to display the number of pixels it is scrolled.
-    </p>
+    <div class="scrollable-place">
+      <div class="flex-div">
+        <h1>Awab Horizontal Scrolling Image Slider</h1>
+      </div>
+      <div class="flex-div"><h1>Scroll Down</h1></div>
+    </div>
 
     <div id="myDIV">
       <img class="image" src="chatting.jpg" alt="" />
@@ -40,9 +52,11 @@
     </div>
 
     <p id="demo"></p>
-    <p>sdfgfsdzfdvcsdr</p>
-    <h1>sdzsfvsdfgvsdgv</h1>
-    <h1 class="scrollable-place">sdfvsdfvgsdvs</h1>
+
+    <div class="flex-div scrollable-place">
+      <h1 style="margin-top: auto; margin-bottom: auto">Scroll Up</h1>
+    </div>
+
     <script>
       var scrollStop = 0;
       let scrollValue = 0;
