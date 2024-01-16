@@ -27,7 +27,7 @@
       overflow: hidden;
     }
     body {
-      overflow: hidden; /* Hide scrollbars */
+      overflow: hidden;
     }
   </style>
 
@@ -63,8 +63,11 @@
       var checkAfterFinishingScrolling = 0;
       let touchScreenYMovement = -1;
       let touchScreenXMovement = -1;
+      //this function is for smart phones scrolling
       function myTouchAction(event) {
-        console.log(event.targetTouches[0].deltaY);
+        //in this part of the code
+        //I am checking the length of the images combined and
+        //checkick  if the user have entered the slider
         let images = document.getElementsByClassName("image");
         const element = document.getElementById("myDIV");
         const rect = element.getBoundingClientRect();
@@ -80,6 +83,8 @@
           (rect.top <= 0 &&
             rect.top >=
               (-window.innerHeight || -document.documentElement.clientHeight));
+        //this if statement checks if the user
+        //scrolls from different spots in the screen
         if (
           touchScreenYMovement == -1 ||
           event.targetTouches[0].screenY - touchScreenYMovement > 10 ||
@@ -91,8 +96,11 @@
           touchScreenYMovement = event.targetTouches[0].screenY;
           touchScreenXMovement = event.targetTouches[0].screenX;
         } else {
+          //this if statement checks if the user entered the images slider
           if (isInViewport) {
+            //this if statement checks if the user is going up or down
             if (event.targetTouches[0].screenY < touchScreenYMovement) {
+              //this if statement checks if the slide has reached the end
               if (
                 element.scrollLeft + 10 >
                 content_width - element.clientWidth
@@ -128,6 +136,7 @@
               touchScreenYMovement = event.targetTouches[0].screenY;
               touchScreenXMovement = event.targetTouches[0].screenX;
             } else {
+              //this if statement checks if the slide has reached the beginning
               if (element.scrollLeft - 10 < 0) {
                 if (element.scrollLeft == 0) {
                   window.scrollBy(0, -20);
@@ -161,6 +170,8 @@
               touchScreenXMovement = event.targetTouches[0].screenX;
             }
           } else {
+            //this if statement is checking if the user is going up
+            //or down out of the image slider
             if (event.targetTouches[0].screenY < touchScreenYMovement) {
               window.scrollBy(0, 20);
             } else {
